@@ -1,3 +1,4 @@
+import { auth } from "@/auth"
 import { AppSidebar } from "@/components/app-sidebar"
 import { ModeToggle } from "@/components/mode-toggle"
 import {
@@ -15,7 +16,13 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 
-export default function Page() {
+export default async function DashboardPage() {
+const session = await auth()
+ 
+  if (!session) {
+    return <div>Not authenticated</div>
+  }
+
   return (
     <SidebarProvider>
       <AppSidebar />

@@ -16,40 +16,44 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+//import { signIn } from "@/auth";
+import { loginAction } from "@/actions/auth-actions";
 
-
-const loginSchema = z
-  .object({
-    email: z.string().email(),
-    password: z.string().min(6, {
-      message: "Password must be at least 6 characters.",
-    }),
-  })
+const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6, {
+    message: "Password must be at least 6 characters.",
+  }),
+});
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-    const form = useForm<z.infer<typeof loginSchema>>({
-      resolver: zodResolver(loginSchema),
-      defaultValues: {
-        email: "",
-        password: "",
-      },
-    });
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
-    // 2. Define a submit handler.
-      function onSubmit(values: z.infer<typeof loginSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values);
-if (values.email === "metapiascl@gmail.com" && values.password === "Batman") {
-          alert("Login successful!");
-        } else {
-          alert("Invalid email or password. Please try again.");
-        }
+  // 2. Define a submit handler.
+  async function onSubmit(values: z.infer<typeof loginSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    // console.log(values);
+    // if (
+    //   values.email === "metapiascl@gmail.com" &&
+    //   values.password === "Batman"
+    // ) {
+    //   alert("Login successful!");
+    // } else {
+    //   alert("Invalid email or password. Please try again.");
+    // }
+    await  loginAction(values);
 
-      }
+  }
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -65,40 +69,47 @@ if (values.email === "metapiascl@gmail.com" && values.password === "Batman") {
                   </p>
                 </div>
                 <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs font-medium text-gray-900">Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="email"
-                        placeholder="Enter Email"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs font-medium text-gray-900">Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Enter Password"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-                <Button type="submit" className="w-full  bg-blue-500 text-white hover:bg-blue-700">
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs font-medium text-gray-900">
+                        Email
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="email"
+                          placeholder="Enter Email"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs font-medium text-gray-900">
+                        Password
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="Enter Password"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button
+                  type="submit"
+                  className="w-full  bg-blue-500 text-white hover:bg-blue-700"
+                >
                   Login
                 </Button>
               </div>
@@ -118,8 +129,8 @@ if (values.email === "metapiascl@gmail.com" && values.password === "Batman") {
         </CardContent>
       </Card>
       <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
-        By clicking continue, you agree to our Terms of Service
-        and Privacy Policy.
+        By clicking continue, you agree to our Terms of Service and Privacy
+        Policy.
       </div>
     </div>
   );

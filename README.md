@@ -9,3 +9,6 @@ Folder auth
 Login Page, pending validation with zod
 
 Dasboard Page, with dark mode
+
+instalado prisma
+validacion de session ok, falta consultar la BD (Bluweb)
